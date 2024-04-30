@@ -10,9 +10,9 @@ from sqlalchemy.orm import relationship
 import io
 import random
 from flask_mail import Mail, Message
-import dotenv
+#import dotenv
 
-dotenv.load_dotenv()
+#dotenv.load_dotenv()
 
 app = Flask(__name__)
 
