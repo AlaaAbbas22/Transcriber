@@ -23,7 +23,7 @@ import Transcribe from "./components/Transcribe";
 import Register from "./components/Register";
 
 
-const baseURL = "https://transcriber-wk6b.vercel.app"
+const baseURL = "https://transcriber-zi3m.onrender.com"
 
 
 
