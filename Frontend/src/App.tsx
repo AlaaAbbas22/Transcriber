@@ -21,9 +21,10 @@ import Tooltip from '@mui/material/Tooltip';
 import { useEffect } from "react";
 import Transcribe from "./components/Transcribe";
 import Register from "./components/Register";
+import EmailAuth from "./components/emailauth";
 
 
-const baseURL = "https://transcriber-zi3m.onrender.com"
+const baseURL = "https://transcriber-zi3m.onrender.com"//"http://127.0.0.1:8000"//
 
 
 
@@ -46,7 +47,7 @@ const router = createBrowserRouter([
                           <Link to="/"><img src={logo} className="h-8" alt="Logo" /></Link>
                       </div>
                       <div className="relative bottom-2 md:bottom-4">
-                          <Link className="p-2 text-black" to="/dashboard">Dashboard</Link>{localStorage.getItem("logged_intern")=="true"&&<Link to="#" className="p-1 bg-white text-blue-950 rounded-lg ring-2 shadow-lg ring-black hover:bg-red-700 hover:text-white" onClick={handleLogOut}>Log out</Link>}
+                      {localStorage.getItem("logged_intern")=="true"&&<Link className="p-2 text-black" to="/dashboard">Dashboard</Link>||<Link to="/login" className="p-1 bg-white text-blue-950 rounded-lg ring-2 shadow-lg ring-black hover:bg-green-700 hover:text-white" >Log in</Link>}{localStorage.getItem("logged_intern")=="true"&&<Link to="#" className="p-1 bg-white text-blue-950 rounded-lg ring-2 shadow-lg ring-black hover:bg-red-700 hover:text-white" onClick={handleLogOut}>Log out</Link>}
                       </div>  
                     </div>{localStorage.getItem('logged_intern')=="true"&&<div className="md:absolute top-7 right-6 text-black sm:mx-auto">Hey, {localStorage.getItem('intern_name')}</div>}</div><Outlet/>
                     
@@ -56,6 +57,8 @@ const router = createBrowserRouter([
       {path:"/login",
        element:<><Login baseURL={baseURL}/></>},
 
+       {path:"/emailauth",
+       element:<><EmailAuth baseURL={baseURL}/></>},
        {path:"/register",
        element:<><Register baseURL={baseURL}/></>},
        {path:"/dashboard",

@@ -12,7 +12,6 @@ const Login = ({ baseURL }: {baseURL: String}) => {
   const handleSubmit = async (event: React.FormEvent) => {
     setloading("Loading")
     event.preventDefault();
-    localStorage.setItem('logged_intern', "true");
     
     await Http.post(`${baseURL}/login`, {
       email: username,
@@ -26,6 +25,7 @@ const Login = ({ baseURL }: {baseURL: String}) => {
       localStorage.setItem('intern_name', response.data["name"]);
       localStorage.setItem('email', response.data["email"]);
       localStorage.setItem('id', response.data["id"]);
+      localStorage.setItem('logged_intern', "true");
       
       window.location.replace("/dashboard/");
     }
@@ -39,12 +39,12 @@ const Login = ({ baseURL }: {baseURL: String}) => {
 
   return (
     loading=="Done"&&<div className="login-container">
-      <form className="login-form bg-black bg-gradient-to-tl from-slate-950 to-slate-700" onSubmit={handleSubmit}>
+      <form className="login-form bg-black bg-gradient-to-tl from-white to-slate-900 text-black" onSubmit={handleSubmit}>
         <h2 className='text-3xl mb-5'>Login</h2>
         <div className="form-group">
           <label htmlFor="email">Username (email)</label>
           <input
-            className='text-black'
+            className='text-black bg-transparent'
             type="text"
             id="username"
             value={username}
@@ -55,7 +55,7 @@ const Login = ({ baseURL }: {baseURL: String}) => {
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
-            className='text-black'
+            className='text-black bg-transparent'
             type="password"
             id="password"
             value={password}
@@ -65,7 +65,7 @@ const Login = ({ baseURL }: {baseURL: String}) => {
         </div>
         <button type="submit">Login</button>
         <div className='text-red-700'>{error}</div>
-        <Link to="/register">Register, instead!</Link>
+        <Link to="/register" className='text-blue-900 hover:text-blue-900 hover:underline'>Register, instead!</Link>
       </form>
     </div>||<div className="m-auto my-20 w-40"><TailSpin
             height="140"

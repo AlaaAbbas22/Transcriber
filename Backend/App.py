@@ -153,11 +153,11 @@ def register():
         otp = OTP()
         db.session.add(Otp(email= request.json["email"], password =request.json["password"], otp=otp, name=request.json["name"]))
         db.session.commit()
-        msg = Message('Your OTP for El-Transcriber!', sender =   'alaaorabi952@gmail.com', recipients = [request.json["email"]])
+        msg = Message('Your OTP for El-Transcriber!', sender =   'eltranscriber.email@gmail.com', recipients = [request.json["email"]])
         msg.body = f"Hey {request.json['name']}, \n Here is your OTP, {otp}"
         mail.send(msg)
         
-        return {"status":200}
+        return {"status":200, "otp":otp}
     
 @app.route('/emailauth', methods = ["POST"])
 def mailauth():

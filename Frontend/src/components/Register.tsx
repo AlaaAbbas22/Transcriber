@@ -12,7 +12,7 @@ const [error, seterror] = useState("")
   const handleSubmit = async (event: React.FormEvent) => {
     setloading("Loading")
     event.preventDefault();
-    localStorage.setItem('logged_intern', "true");
+    
     
     await Http.post(`${baseURL}/register`, {
       email: username,
@@ -21,11 +21,8 @@ const [error, seterror] = useState("")
     }).then((response)=>{
       
       if (response.data["result"]!="User exists"){
-        localStorage.setItem('intern_name', response.data["name"]);
-        localStorage.setItem('email', response.data["email"]);
-        localStorage.setItem('id', response.data["id"]);
-        
-        window.location.replace("/dashboard/");}
+        localStorage.setItem('email', username);
+        window.location.replace("/emailauth/");}
       else {
         seterror("Error! User already exits.")
         setloading("Done")
@@ -45,7 +42,7 @@ const [error, seterror] = useState("")
         <div className="form-group">
         <label htmlFor="name">Name</label>
           <input
-            className='text-black'
+            className='text-black bg-transparent'
             type="text"
             id="name"
             value={name}
@@ -56,7 +53,7 @@ const [error, seterror] = useState("")
           <div className="form-group">
           <label htmlFor="email">Username (email)</label>
           <input
-            className='text-black'
+            className='text-black bg-transparent'
             type="text"
             id="username"
             value={username}
@@ -67,7 +64,7 @@ const [error, seterror] = useState("")
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
-            className='text-black'
+            className='text-black bg-transparent'
             type="password"
             id="password"
             value={password}
@@ -77,7 +74,7 @@ const [error, seterror] = useState("")
         </div>
         <button type="submit">Sign Up</button>
         <div className='text-red-700'>{error}</div>
-        <Link to="/login">Login, instead!</Link>
+        <Link to="/login" className='hover:underline'>Login, instead!</Link>
       </form>
     </div>||<div className="m-auto my-20 w-40"><TailSpin
             height="140"
