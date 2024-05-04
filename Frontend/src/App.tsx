@@ -10,7 +10,6 @@ import './App.css'
 
 import Nav2 from './components/Nav2'
 import History from "./components/History";
-import logo from "../public/El statistician (2).png"
 import user from "../public/user.png"
 
 import img from "../public/5837088.png"
