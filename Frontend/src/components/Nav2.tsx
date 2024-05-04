@@ -33,14 +33,14 @@ useEffect(()=>{
     </div>
     {mob&&<div className="items-center justify-between  w-full md:flex md:w-auto md:order-1" id="navbar-cta">
       <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white  ">
-        <li onClick={()=>{if(width <= 768){setmob(!mob)}}}>
-          <Link to="/transcribe" className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 ">Transcribe</Link>
+        <li onClick={()=>{if(width <= 768){setmob(!mob)}}} className={(window.location.pathname=="/transcribe"&&"ring ring-blue-950"||"")}>
+          <Link to="/transcribe" className={"block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-2 "}>Transcribe</Link>
         </li>
-        <li onClick={()=>{if(width <= 768){setmob(!mob)}}}>
-          <Link to="/history" className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 ">History</Link>
+        <li onClick={()=>{if(width <= 768){setmob(!mob)}}} className={(window.location.pathname=="/history"&&"ring ring-blue-950"||"")}>
+          <Link to="/history" className={"block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-2 "}>History</Link>
         </li>
-        <li onClick={()=>{if(width <= 768){setmob(!mob)}}}>
-          <Link to="/profile" className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 ">My Profile</Link>
+        <li onClick={()=>{if(width <= 768){setmob(!mob)}}} className={(window.location.pathname=="/profile"&&"ring ring-blue-950"||"")}>
+          <Link to="/profile" className={"block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-2 "}>My Profile</Link>
         </li>
         
       </ul>

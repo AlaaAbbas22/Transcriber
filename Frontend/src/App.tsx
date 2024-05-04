@@ -43,9 +43,9 @@ const router = createBrowserRouter([
     element: <>
                 <div className="bg-white py-2 px-0 md:px-20 ring">
                     <div  className=" relative bottom-4 md:bottom-0">    
-                      <div className="flex items-center  relative md:top-3 top-[110px] w-[20%]">
-                          <Link to="/"><img src={logo} className="h-8" alt="Logo" /></Link>
-                      </div>
+                    <Link to="/"><div className="flex items-center  relative md:top-3 top-[110px] w-[20%] z-30">
+                          ElTranscriber
+                      </div></Link>
                       <div className="relative bottom-2 md:bottom-4">
                       {localStorage.getItem("logged_intern")=="true"&&<Link className="p-2 text-black" to="/dashboard">Dashboard</Link>||<Link to="/login" className="p-1 bg-white text-blue-950 rounded-lg ring-2 shadow-lg ring-black hover:bg-green-700 hover:text-white" >Log in</Link>}{localStorage.getItem("logged_intern")=="true"&&<Link to="#" className="p-1 bg-white text-blue-950 rounded-lg ring-2 shadow-lg ring-black hover:bg-red-700 hover:text-white" onClick={handleLogOut}>Log out</Link>}
                       </div>  
