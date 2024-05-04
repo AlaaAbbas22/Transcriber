@@ -144,7 +144,7 @@ def clear():
 def deletingitem():
     session_id1 = Session_Id.query.filter_by(session_id=str(session["uid"])).first()
     email = session_id1.email_session
-    item = History.query.filter_by(email_vid=email, id=int(request.json["id"]))
+    item = History.query.filter_by(email_vid=email, id=int(request.json["id"])).first()
     if item:
         db.session.delete(item)
         db.session.commit()
