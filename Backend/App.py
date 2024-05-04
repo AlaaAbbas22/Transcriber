@@ -127,7 +127,7 @@ def history():
     history_list = History.query.filter_by(email_vid=email)
     history_sent = []
     for his in history_list:
-        history_sent.append((his.vid_name, his.transcription_res))
+        history_sent.append((his.vid_name, his.transcription_res, his.id))
     return {"result":history_sent}
 
 @app.route("/clearhistory", methods=["POST"])
@@ -138,6 +138,16 @@ def clear():
     for his in history_list:
         db.session.delete(his)
     db.session.commit()
+    return {"result":200}
+
+@app.route("/deleteitem", methods=["POST"])
+def clear():
+    session_id1 = Session_Id.query.filter_by(session_id=str(session["uid"])).first()
+    email = session_id1.email_session
+    item = History.query.filter_by(email_vid=email, id=int(request.json["id"]))
+    if item:
+        db.session.delete(item)
+        db.session.commit()
     return {"result":200}
 
 

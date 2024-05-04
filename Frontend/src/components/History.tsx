@@ -27,16 +27,16 @@ const History = ({baseURL}: {baseURL: String}) => {
       setMyHistory(newc)
 
     } else {
-    response.data.result.map((item: Array<Array<String|Array<String>>>, index: Number)=>{
+    response.data.result.map((item: Array<Array<String|Array<String>>>)=>{
               
       newc.unshift(
         <>
-          <li key={String(index)} style={{margin: "3% 5% 1% 5%", padding:"3% 3% 1% 3%"}} className="text-black md:text-xl text-sm text-left rounded-3xl border bg-gray-100 relative" id={String(index)}>
+          <li key={String(item[2])} style={{margin: "3% 5% 1% 5%", padding:"3% 3% 1% 3%"}} className="text-black md:text-xl text-sm text-left rounded-3xl border bg-gray-100 relative" id={String(item[2])}>
             <span className="indent-8 p-3">Video Name: {item[0]}<br/><br/>Transcription: <br/>{item[1]}</span>
          
           </li>
           <button 
-            id={String(index)} 
+            id={String(item[2])} 
             className="bg-white rounded-3xl ring-2 ring-black   md:text-xl text-sm w-[50%] mx-auto mb-7 mt-0 hover:bg-red-700" 
             onClick={deleteitem}>
             Delete the transcription above
