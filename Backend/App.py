@@ -141,7 +141,7 @@ def clear():
     return {"result":200}
 
 @app.route("/deleteitem", methods=["POST"])
-def clear():
+def deletingitem():
     session_id1 = Session_Id.query.filter_by(session_id=str(session["uid"])).first()
     email = session_id1.email_session
     item = History.query.filter_by(email_vid=email, id=int(request.json["id"]))
