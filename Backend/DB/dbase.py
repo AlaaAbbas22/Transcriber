@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, ForeignKey, Text
 from sqlalchemy.orm import relationship
 
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres.ahawcxpjpciywzdgeuxf:Z4gyAfqa2lX4KHK0@aws-0-eu-central-1.pooler.supabase.com:5432/postgres"
+SQLALCHEMY_DATABASE_URL = os.environ["db"]
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL
