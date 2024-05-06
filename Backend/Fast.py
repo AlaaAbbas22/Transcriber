@@ -1,6 +1,9 @@
+#import dotenv
+#dotenv.load_dotenv()
+
 import io
 from typing import Annotated
-from fastapi import FastAPI, Depends, Form, Request, BackgroundTasks, File, UploadFile
+from fastapi import FastAPI, Depends, Form, Request, BackgroundTasks, File, Response, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
@@ -14,8 +17,7 @@ from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 import time
 from uuid import uuid4
 
-#import dotenv
-#dotenv.load_dotenv()
+
 
 
 # Dependency to get a SQLAlchemy session
@@ -50,10 +52,11 @@ app.add_middleware(
     SessionMiddleware,
     secret_key=os.environ["secretkey"],  # Change to a secure random secret key
     session_cookie="session",  # Name for your session cookie
-    same_site="lax",  # SameSite cookie policy
-    https_only=False,  # Set to True for HTTPS-only environments
-    max_age=86400,
+    same_site="None",  # SameSite cookie policy
+    https_only=True,  # Set to True for HTTPS-only environments
+    max_age=86400
 )
+
 
 
 
@@ -129,8 +132,9 @@ def dummy():
     return "pong"
 
 @app.get("/dummy")
-def dum(request:Request):
+def dum(request:Request, response:Response):
     print(request.session)
+    request.session["A"] = "A"
     return "pong"
 
 @app.post("/transcribe")
