@@ -23,7 +23,7 @@ import Register from "./components/Register";
 import EmailAuth from "./components/emailauth";
 
 
-const baseURL = "https://transcriber-zi3m.onrender.com"//"http://127.0.0.1:8000"//
+const baseURL = "http://127.0.0.1:8000"//"https://transcriber-zi3m.onrender.com"//
 
 
 
