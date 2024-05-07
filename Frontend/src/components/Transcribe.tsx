@@ -13,7 +13,7 @@ const Transcribe = ({ baseURL }: {baseURL: String}) => {
   const loading = "Done"
   const [working, setworking] = useState(0)
   const [transcribing , setranscribing] = useState("");
-
+  const [src, setsrc] = useState("")
 
   const config = {
     onDownloadProgress: (progressEvent: AxiosProgressEvent) => {
@@ -60,10 +60,16 @@ function downloadString(text: BlobPart, fileType: string, fileName:string) {
 
 
 const handlechange = (e:ChangeEvent<HTMLInputElement>)=>{
-  if (e.target.files?.length!=0){
+  if (e.target.files?.length!=0 && e.target.files){
+                        setFile(null)
+                        new Promise(resolve => setTimeout(resolve, 5000));
                         setFile(e.target.files);
-                            setworking(0)
-                           setranscribing("")}
+                            setworking(0);
+                           setranscribing("");
+                          console.log(URL.createObjectURL(e.target.files[0]))
+                        setsrc(URL.createObjectURL(e.target.files[0]))
+                        
+                    }
   else {
     setFile(null)
   }
@@ -99,20 +105,20 @@ return (
             <p className="mb-2 text-sm text-black z-30"><span className="font-semibold">Click to upload</span> or drag and drop</p>
             <p className="text-xs text-black z-30">MP4, MP3, WAV</p>
         </div>
-        <input id="dropzone-file" type="file" className="text-black  bg-transparent h-[100%] absolute top-0 w-[100%] z-30 bg-gray-500 bg-opacity-50" accept="" onChange={handlechange} />
+        <input id="dropzone-file" type="file" className="text-black  bg-transparent h-[100%] absolute top-0 w-[100%] z-30 bg-gray-500 bg-opacity-50" accept="" onClick={()=>{setFile(null)}} onChange={handlechange} />
         {file&&
 
-          <video autoPlay controls loop muted className="mx-auto h-[100%] absolute top-0 z-0 ">
-            <source src={URL.createObjectURL(file[0])}/>
+          <video id="vid" autoPlay controls loop muted className="mx-auto h-[100%] absolute top-0 z-0 ">
+            <source src={src}/>
           </video>
        }
     </label>
 </div> 
        
         <br/>
-        <button type="submit" className="w-[200px] my-3 ring-2 ring-white bg-sky-700">
-          Transcribe {file&&working}{file&&"% completed"}
-        </button>
+        {file&&<button type="submit" className="w-[200px] my-3 ring-2 ring-white bg-sky-700">
+          Press to Transcribe {file&&working}{file&&"% completed"}
+        </button>}
         </form>
         {transcribing=="Wait"&&<div className="m-auto my-10 w-40"><TailSpin
             height="140"
