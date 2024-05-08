@@ -29,7 +29,7 @@ const Transcribe = ({ baseURL }: {baseURL: String}) => {
 async function A(file:File) {
   setworking(0)
   const formData = new FormData();
-    formData.append('file.mp3', file)
+    formData.append('file', file)
 
   await Http.post(`${baseURL}/transcribe`, formData, config
     )

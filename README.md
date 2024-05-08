@@ -1,6 +1,6 @@
 # El Transcriber
 ## Technologies used:
-1. Python (Flask)
+1. Python (Flask, FastAPI)
 2. TypeScript (ReactJS)
 3. PostgreSQL (Database of user info)
 4. OpenAI API (Whisper model)

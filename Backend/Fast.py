@@ -138,11 +138,11 @@ def dum(request:Request, response:Response):
     return "pong"
 
 @app.post("/transcribe")
-async def transcribe(request: Request,db: Session = Depends(get_db)):
+async def transcribe(request: Request,db: Session = Depends(get_db),file: UploadFile = File(...)):
     session = request.session
 
     form_data = await request.form()
-    file = form_data["file.mp3"]
+    #file = form_data["file"]
     name = file.filename
     filecont = await file.read()
     await file.close()
