@@ -163,6 +163,19 @@ async def transcribe(request: Request,db: Session = Depends(get_db),file: Upload
     return {"transcription":transcription}
 
 
+@app.get("/getuser")
+def getuser(request: Request, db: Session = Depends(get_db)):
+    session = request.session
+    session_id1 = db.query(Session_Id).filter_by(session_id=str(session["uid"])).first()
+    if session_id1:
+        user = db.query(Users).filter_by(email=session_id1.email_session).first()
+        if user:
+            return {"status": 200,"name":user.name, "id":user.id, "email":user.email}
+        else:
+            return {"result":"error"}
+    else:
+        return {"result":"Not found"}
+
 @app.get("/gethistory")
 def history(request: Request, db: Session = Depends(get_db)):
     session = request.session
@@ -194,7 +207,7 @@ def deletingitem(request:Request, item:Item, db: Session = Depends(get_db)):
     session = request.session
     session_id1 = db.query(Session_Id).filter_by(session_id=str(session["uid"])).first()
     email = session_id1.email_session
-    item = db.query(History).filter_by(email_vid=email, id=int(item["id"])).first()
+    item = db.query(History).filter_by(email_vid=email, id=int(item.id)).first()
     if item:
         db.delete(item)
         db.commit()

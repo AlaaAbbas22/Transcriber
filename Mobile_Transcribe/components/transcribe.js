@@ -1,166 +1,109 @@
-import { ChangeEvent, FormEvent, useState } from 'react'
-import { Header, Text } from '@rneui/themed'
-import { Input, Button } from '@rneui/themed'
-import { StyleSheet, View } from 'react-native'
+import { useState } from 'react'
+import { Text } from '@rneui/themed'
+import { Button } from '@rneui/themed'
+import { ImageBackground, StyleSheet, View } from 'react-native'
+import * as Clipboard from 'expo-clipboard';
 import * as DocumentPicker from 'expo-document-picker';
-import * as FileSystem from 'expo-file-system';
 import Http from './Http';
-import { formToJSON } from 'axios';
+import img from "../assets/cool-background.png"
 
 const Transcribe = ({ baseURL }) => {
-      // setting vars
-  const [file, setFile] = useState(null)
+  // setting vars
   const [transcription, settranscription] = useState("")
   const loading = "Done"
-  const [working, setworking] = useState(0)
-  const [transcribing , setranscribing] = useState("");
-  const [src, setsrc] = useState("")
-  
-
-  const config = {
-    
-  }
+  const [uri, setUri] = useState("")
+  const [name, setName] = useState("")
   
 
 //handling submitting mean
-async function A(file) {
-  setworking(0)
-  const formData = new FormData();
-    formData.append('file.mp3', file, "file.mp3")
-    console.log(formData)
-
-
-    await Http.get('https://transcriber-1.onrender.com/dummy')
-      .then(response => console.log(response.data))
-
-
-
-
-  await Http.post(`https://transcriber-1.onrender.com/transcribe`,formToJSON(formData), {
-    headers:{
-      Accept:"application/json",
-      "Content-Type":"application/json",
-    }
-  }
-    )
-  .then(function (response) {
-    console.log("we arrived")
-    
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-
-    
-}
-
-
-function downloadString(text, fileType, fileName) {
-  var blob = new Blob([text], { type: fileType });
-
-  var a = document.createElement('a');
-  a.download = fileName;
-  a.href = URL.createObjectURL(blob);
-  a.dataset.downloadurl = [fileType, a.download, a.href].join(':');
-  a.style.display = "none";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(function() { URL.revokeObjectURL(a.href); }, 1500);
-}
-
-
-
-const handlechange = (e)=>{
-  if (e.target.files?.length!=0 && e.target.files){
-                        setFile(null)
-                        new Promise(resolve => setTimeout(resolve, 5000));
-                        setFile(e.target.files);
-                            setworking(0);
-                           setranscribing("");
-                          console.log(URL.createObjectURL(e.target.files[0]))
-                        setsrc(URL.createObjectURL(e.target.files[0]))
-                        
-                    }
-  else {
-    setFile(null)
-  }
-                          }
-
-
-if (false){
-  return <Navigate replace to="/login" />;
-}
-else{
-  function handleSubmitVid(event) {
-    
-    event.preventDefault()
-    setranscribing("Wait")
-    if (file){
-    A(file[0])
-    console.log((file[0]));}
-  }
-
-
-const filePickerOptions = {
-  title: 'Select a File',
-  multiple: false,  // Allows only one file to be selected
-  type: ['image/jpeg', 'image/png'],  // Only allow JPEG and PNG images
+async function A() {
+  settranscription("Loading...")
+  const file = {
+    uri : uri,
+    name: name,
+    type: 'video/mp4'
 };
+  console.log(file)
 
+  const formData = new FormData();
+    formData.append('file', {
+      uri: file.uri,
+      name: file.name,
+      type: file.type
+  })
+    const headers = {
+      accept: 'application/json',
+      'content-type': 'multipart/form-data',
+  };
+      await Http.post(`${baseURL}/transcribe`, formData,{
+        headers: headers,
+    }).then(function (response) {
+      str = response.data.transcription.substring(0, response.data.transcription.length - 1)
+    settranscription(str)
+    console.log(str)
+  }).catch(function (error) {
+    console.log(error);
+  });}
     
     const handleFilePick = async () => {
-      console.log("f")
       res = await DocumentPicker.getDocumentAsync({type:["video/*","audio/*"]})
-      console.log(res, typeof(res))
-            // Read the file from the URI to a base64 string
-            const fileData = await FileSystem.readAsStringAsync(res["assets"][0]["uri"], { encoding: FileSystem.EncodingType.Base64 });
-
-            // Convert the base64 string to a Blob
-            const blob = new Blob([fileData], { type: 'video/mp4' }); // Adjust MIME type accordingly
-      console.log(blob)
-            
-    A(blob)      
+      if (!res["canceled"]){            
+          console.log(res)
+          setName(res["assets"][0]["name"])
+          setUri(res["assets"][0]["uri"])   
+        } else{
+          setName("")
+          setUri("")  
+          settranscription("")
+        }     
     };
   
 
 
 return (
 (loading=="Done")&&<>
-<View style={styles.container}>
-    <Text style={styles.header}>Video Transcriber</Text>
-    <Text >
-            {/*<svg className="w-8 h-8 mb-4 text-black z-30" aria-hidden="true" fill="none" viewBox="0 0 20 16">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-</svg>*/}
-            <Text >Click to upload</Text>
-            
-        </Text>
-        <Text >MP4, MP3, WAV</Text>
-    <Input id="dropzone-file" type="file" accept="" onClick={()=>{setFile(null)}} onChange={handlechange} />
-    {(file||true)&&<Button onPress={handleFilePick}>
-          Press to Transcribe {file&&working}{file&&"% completed"}
-        </Button>}
+  
+  <View style={styles.container}>
+  <ImageBackground source={img} style={styles.image} imageStyle={{}} resizeMode="cover">
+    <View style={{margin:50, justifyContent:"center", alignItems:"center"}}>
+    <Text style={styles.header}>
+      Transcriber
+    </Text>
+
+    <Text style={{margin:10,}}>
+      <Button onPress={handleFilePick} color="grey" >
+          Press to pick an audio or video file
+      </Button>
+    </Text>
+    
+    {name!= ""&&
+    <Text style={styles.data}>
+      {name}
+    </Text>}
+
+    {(name!="")&&
+    <Button onPress={A}>
+      Press to Transcribe
+    </Button>}
 
 
-        {(transcribing=="Done"||true)&&<Text><Button onClick={()=>downloadString(transcription, "text/txt", `${file? file[0].name:""}.txt`)} className="w-[200px] my-4 ring-2 ring-white bg-green-600">
-          Download Transcription
-        </Button><Text>
-            {transcription}
-            </Text></Text>}
-                
-        {file&&
+    {(transcription!="")&&
+    <Text style={{margin:20}}>
+      "{transcription}"
+    </Text>}
 
-          <video id="vid" autoPlay controls loop muted >
-            <source src={src}/>
-          </video>
-       }
 
+    {(transcription!=""&&transcription!="Loading...")&&
+    <Button onPress={()=>{Clipboard.setStringAsync(transcription)}}>
+      Copy Transcription
+    </Button>}
+    </View>
+</ImageBackground>
   </View>  
 </>
 
 )}
-}
+
 
 export default Transcribe
 
@@ -168,15 +111,8 @@ export default Transcribe
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor:"white",
-      alignItems: 'center',
+      
       justifyContent: 'center',
-    },
-    input: {
-      height: 40,
-      margin: 12,
-      borderWidth: 1,
-      padding: 10,
     },
     image: {
         flex: 1,
@@ -184,14 +120,40 @@ const styles = StyleSheet.create({
       },
       header:{
         padding:10,
+        marginBottom:30,
         fontSize:30,
-        borderColor:"green",
+        borderColor:"#000",
         borderWidth: 10,
         alignItems: 'center',
         justifyContent: 'center',
         textAlign:'center',
         textAlignVertical:'center',
-        backgroundColor:'yellow',
+        backgroundColor:'#a0d0ff',
+        top:-40,
+        fontFamily:"serif"
+      },
+      logout:{
+        backgroundColor:"#ffffff",
+        
+        position: 'absolute',
+        justifyContent:"flex-start",
+        top: 0,
+        right: 0,
+        width: 50,
+        height: 50,
+
+      },
+      picker:{
+        margin:20,
+        alignContent:"center"
+      },
+      data:{
+        alignItems: 'center',
+        textAlign:'center',
+        textAlignVertical:'center',
+        marginBottom:20,
+        width:300,
+        fontSize:18,
+        fontFamily:"serif"
       }
-  
   });

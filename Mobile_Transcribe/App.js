@@ -1,15 +1,17 @@
 import { NavigationContainer,DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet, Text, View } from 'react-native';
-import Mean from './components/mean';
+import History from './components/history';
 import Login from './components/login';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Transcribe from './components/transcribe';
-import FilePickerManager from 'react-native-file-picker';
-
+import { ImageBackground } from 'react-native';
+import {  Button } from '@rneui/base';
+import Profile from './components/myprofile';
+import Http from './components/Http';
 
 const Tab = createBottomTabNavigator();
-const baseURL = "http://127.0.0.1:8000"//"https://transcriber-zi3m.onrender.com"//"https://transcriber-1.onrender.com"//
+const baseURL = "https://transcriber-1.onrender.com"//"http://127.0.0.1:8000"//"https://transcriber-zi3m.onrender.com"//
 
 const MyTheme = {
   ...DefaultTheme,
@@ -20,13 +22,46 @@ const MyTheme = {
   },
 };
 
+
+
+
 export default function App() {
   const remove_icon = {tabBarIconStyle: { display: "none" } };
-  const [logged, setlogged] = useState(true)
+  const [logged, setlogged] = useState(false)
   
+  useEffect(async ()=>{
+    await Http.get(`${baseURL}/getuser`).then((res)=>{
+      if (res.data.id){
+        setlogged(true)
+      }
+    })
+  
+  },[])
+
+  async function logout() {
+    
+    setlogged(false);
+    await Http.post(`${baseURL}/logout`, {}).then(()=>{
+      
+        setlogged(false)
+    
+    }).catch((e)=>{
+      console.log(e);
+      
+    });
+  }
+
   if (logged){return (
     
     <NavigationContainer theme={MyTheme}>
+      
+      <View style={styles.container}>
+        <View style={styles.top}>
+        <Button color="red" onPress={logout}>
+          Logout
+        </Button>
+        </View>
+      </View>
       <Tab.Navigator tabBarOptions={{
         labelStyle: {
           position: 'absolute',
@@ -38,23 +73,31 @@ export default function App() {
           fontSize:16,
         },
       }}>
-        <Tab.Screen name="Transcribe"  component={()=><Transcribe baseURL={"propValue"}/>} options={remove_icon} />
-        <Tab.Screen name="Mean"  component={()=><Mean Name={"propValue"}/>} options={remove_icon} />
-        <Tab.Screen name="Man"  component={()=><Mean Name={"propValue"}/>} options={remove_icon} />
+        <Tab.Screen name="Transcribe"  component={()=><Transcribe baseURL={baseURL} />} options={remove_icon} />
+        <Tab.Screen name="History"  component={()=><History baseURL={baseURL} />} options={remove_icon} />
+        <Tab.Screen name="My Profile"  component={()=><Profile baseURL={baseURL} />} options={remove_icon} />
 
       </Tab.Navigator>
+      
     </NavigationContainer>
   )}
   else{
-    return  <Login/>
+    return  <Login baseURL={baseURL} setlogged={setlogged}/>
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+   height:80
   },
-});
+    top:{
+      backgroundColor: '#fff',
+      position:"absolute",
+      top:40,
+      right:0,
+      zIndex:100
+    },
+    
+  },
+);
