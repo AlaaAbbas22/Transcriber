@@ -244,7 +244,6 @@ def mailauth(request:Request, muser:MUser, db:Session = Depends(get_db)):
         uid = uuid4()
         db.add(Users(name=temp_user.name,email= muser.email, password =temp_user.password))
         db.commit()
-        db = Depends(get_db)
         user = db.query(Users).filter_by(email=muser.email, password= temp_user.password).first()
         user.session_ids.append(Session_Id(session_id = uid, email_session= user))
         session["uid"] = str(uid)

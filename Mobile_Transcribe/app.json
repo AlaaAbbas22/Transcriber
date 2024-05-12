@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "packagerOpts": { "url": "http://localhost:3000" },
+    "packagerOpts": {
+      "url": "http://localhost:3000"
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -22,7 +24,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.alaaabbas.Mobile_Transcribe"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -34,6 +37,11 @@
           "iCloudContainerEnvironment": "Production"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "1af72fc1-71cc-430d-b69b-19c67131dc65"
+      }
+    }
   }
 }
