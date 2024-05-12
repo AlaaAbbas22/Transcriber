@@ -5,10 +5,14 @@ import History from './components/history';
 import Login from './components/login';
 import { useEffect, useState } from 'react';
 import Transcribe from './components/transcribe';
-import { ImageBackground } from 'react-native';
 import {  Button } from '@rneui/base';
 import Profile from './components/myprofile';
 import Http from './components/Http';
+import { createStackNavigator } from '@react-navigation/stack';
+import Register from './components/signup';
+import OTP from './components/otp';
+const Stack = createStackNavigator();
+
 
 const Tab = createBottomTabNavigator();
 const baseURL = "https://transcriber-1.onrender.com"//"http://127.0.0.1:8000"//"https://transcriber-zi3m.onrender.com"//
@@ -28,14 +32,17 @@ const MyTheme = {
 export default function App() {
   const remove_icon = {tabBarIconStyle: { display: "none" } };
   const [logged, setlogged] = useState(false)
+  const [email, setterEmail] = useState("")
+  useEffect(()=>{
   
-  useEffect(async ()=>{
-    await Http.get(`${baseURL}/getuser`).then((res)=>{
+    
+    const func = async ()=>{ await Http.get(`${baseURL}/getuser`).then((res)=>{
       if (res.data.id){
         setlogged(true)
       }
-    })
-  
+    })}
+
+    func()
   },[])
 
   async function logout() {
@@ -82,7 +89,12 @@ export default function App() {
     </NavigationContainer>
   )}
   else{
-    return  <Login baseURL={baseURL} setlogged={setlogged}/>
+    return (<NavigationContainer><Stack.Navigator>
+      <Stack.Screen name="Login" component={({navigation})=> <Login baseURL={baseURL} setlogged={setlogged} navigation={navigation}/>} />
+      <Stack.Screen name="Sign Up" component={({navigation})=> <Register baseURL={baseURL} setterEmail={setterEmail} navigation={navigation}/>} />
+      <Stack.Screen name="OTP" component={()=> <OTP baseURL={baseURL} email={email} setlogged={setlogged}/>} />
+    </Stack.Navigator></NavigationContainer>)
+
   }
 }
 

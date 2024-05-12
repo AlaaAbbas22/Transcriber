@@ -6,32 +6,39 @@ import { useState } from 'react';
 import img from "../assets/bg.jpg"
 import Http from './Http';
 
-function Login({baseURL, setlogged, navigation}) {
+function Register({baseURL, navigation, setterEmail}) {
+    const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    async function login(){
-      console.log(`${baseURL}/login`)
-      await Http.post(`${baseURL}/login`, {
-        email: username,
-        password:password,
-      }).then((response)=>{
-        if (response.data["result"]=="Not found"){
-
-        }
-        else{
-          console.log(response.data)
-          setlogged(true)
-      }
-      }).catch((e)=>{
-        console.log(e);
-
-      });
+    async function register(){
+        await Http.post(`${baseURL}/register`, {
+            email: username,
+            password:password,
+            name:name,
+          }).then((response)=>{
+            
+            if (response.data["result"]!="User exists"){
+                setterEmail(username)
+                navigation.navigate("OTP");}
+            else {
+              
+            }
+          }).catch((e)=>{
+            console.log(e);
+          });
   }
   return (
     
     <View style={styles.container}>
-    <Text style={styles.label}>Username</Text>
+    <Text style={styles.label}>Name</Text>
+    <TextInput
+      style={styles.input}
+      onChangeText={(e)=>{setName(e)}}
+      value={name}
+      placeholder="Name"
+    />
+    <Text style={styles.label}>Username (Email Address)</Text>
     <TextInput
       style={styles.input}
       onChangeText={(e)=>{setUsername(e)}}
@@ -48,14 +55,14 @@ function Login({baseURL, setlogged, navigation}) {
       secureTextEntry={true}
     />
     <Button
-        onPress={()=>{login()}}
+        onPress={()=>{register()}}
         title="Refresh"
         color="#0000ff"
-    ><Icon name="book" color="white" />Login</Button>
+    ><Icon name="book" color="white" />Sign Up</Button>
     <View style={{margin:20}}>
     <Button
-        onPress={()=>{navigation.navigate('Sign Up')}}
-        title="Sign Up Instead"
+        onPress={()=>{navigation.navigate('Login')}}
+        title="Login Instead"
         color="#aa00aa"
     ></Button>
     </View>
@@ -64,7 +71,7 @@ function Login({baseURL, setlogged, navigation}) {
   )}
 
 
-export default Login
+export default Register
   
   const styles = StyleSheet.create({
     container: {

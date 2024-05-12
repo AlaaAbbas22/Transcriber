@@ -6,8 +6,8 @@ const Register = ({ baseURL }: {baseURL: String}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setloading] = useState('Done');
-const [name, setname] = useState("")
-const [error, seterror] = useState("")
+  const [name, setname] = useState("")
+  const [error, seterror] = useState("")
 
   const handleSubmit = async (event: React.FormEvent) => {
     setloading("Loading")

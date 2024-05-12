@@ -232,7 +232,7 @@ def register(request:Request, muser:MUser, background_tasks:BackgroundTasks, db:
         otp = OTP()
         db.add(Otp(email= muser.email, password = muser.password, otp=otp, name=muser.name))
         db.commit()
-        send_email_background(background_tasks,"Your OTP for El-Transcriber!", muser.email,f"Hey {muser.email}, \n Here is your OTP, {otp}")
+        send_email_background(background_tasks,"Your OTP for El-Transcriber!", muser.email,f"Hey {muser.name}, \n Here is your OTP, {otp}")
 
         return {"status":200, "otp":otp}
     
@@ -243,6 +243,8 @@ def mailauth(request:Request, muser:MUser, db:Session = Depends(get_db)):
     if temp_user:
         uid = uuid4()
         db.add(Users(name=temp_user.name,email= muser.email, password =temp_user.password))
+        db.commit()
+        db = Depends(get_db)
         user = db.query(Users).filter_by(email=muser.email, password= temp_user.password).first()
         user.session_ids.append(Session_Id(session_id = uid, email_session= user))
         session["uid"] = str(uid)
