@@ -110,7 +110,8 @@ function App() {
       localStorage.setItem('id', res.data["id"]);
       localStorage.setItem('logged_intern', "true");
       } else{
-        handleLogOut()
+        if (localStorage.getItem('logged_intern')=="true"){handleLogOut()}
+        
       }
     })}
 
