@@ -100,6 +100,22 @@ function App() {
     console.log("Run")
   }, []);
 
+  useEffect(()=>{
+  
+    
+    const func = async ()=>{ await Http.get(`${baseURL}/getuser`).then((res)=>{
+      if (res.data.id){
+        localStorage.setItem('intern_name', res.data["name"]);
+      localStorage.setItem('email', res.data["email"]);
+      localStorage.setItem('id', res.data["id"]);
+      localStorage.setItem('logged_intern', "true");
+      } else{
+        handleLogOut()
+      }
+    })}
+
+    func()
+  },[])
 
   return (
     <>

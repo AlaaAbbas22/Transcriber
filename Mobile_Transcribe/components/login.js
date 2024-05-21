@@ -17,7 +17,7 @@ function Login({baseURL, setlogged, navigation}) {
         password:password,
       }).then((response)=>{
         if (response.data["result"]=="Not found"){
-
+          console.log("Not found")
         }
         else{
           console.log(response.data)

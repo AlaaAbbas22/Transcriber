@@ -166,7 +166,10 @@ async def transcribe(request: Request,db: Session = Depends(get_db),file: Upload
 @app.get("/getuser")
 def getuser(request: Request, db: Session = Depends(get_db)):
     session = request.session
-    session_id1 = db.query(Session_Id).filter_by(session_id=str(session["uid"])).first()
+    if "uid" in session:
+        session_id1 = db.query(Session_Id).filter_by(session_id=str(session["uid"])).first()
+    else:
+        session_id1 = None
     if session_id1:
         user = db.query(Users).filter_by(email=session_id1.email_session).first()
         if user:

@@ -11,6 +11,11 @@ import Http from './components/Http';
 import { createStackNavigator } from '@react-navigation/stack';
 import Register from './components/signup';
 import OTP from './components/otp';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreAllLogs();//Ignore all log notifications
+
+
 const Stack = createStackNavigator();
 
 

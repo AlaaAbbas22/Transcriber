@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Mobile_Transcribe",
+    "name": "Mobile Transcribe",
     "slug": "Mobile_Transcribe",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -10,9 +10,6 @@
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
-    },
-    "packagerOpts": {
-      "url": "http://localhost:3000"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -25,7 +22,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.alaaabbas.Mobile_Transcribe"
+      "package": "com.alaaabbas.mobiletranscribe"
     },
     "web": {
       "favicon": "./assets/favicon.png"
